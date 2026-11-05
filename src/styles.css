@@ -1,0 +1,87 @@
+:root {
+  --preto: #0a0a0a;
+  --painel: #141414;
+  --painel-2: #1d1d1d;
+  --branco: #f5f5f5;
+  --cinza: #8c8c8c;
+  --cinza-escuro: #3a3a3a;
+  --linha: rgba(255, 255, 255, 0.1);
+  --laranja: #ff6b00;
+  --laranja-fundo: rgba(255, 107, 0, 0.14);
+  --vermelho: #ef4444;
+  --vermelho-fundo: rgba(239, 68, 68, 0.16);
+  --letra: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+  --mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+}
+
+* { box-sizing: border-box; }
+html, body, #root { margin: 0; height: 100%; }
+body { background: #000; color: var(--branco); font-family: var(--letra); overflow: hidden; }
+button { font-family: var(--letra); }
+
+.ecra { position: fixed; inset: 0; }
+.palco { position: absolute; left: 50%; top: 50%; transform-origin: center center; background: var(--preto); overflow: hidden; }
+.slide { position: absolute; inset: 0 0 70px 0; padding: 64px 96px 0; display: flex; flex-direction: column; }
+
+/* rodapé */
+.rodape { position: absolute; left: 0; right: 0; bottom: 0; height: 70px; display: flex; align-items: center; justify-content: space-between; padding: 0 96px; color: var(--cinza); font-size: 16px; }
+.rodape-logo { height: 30px; opacity: 0.85; }
+.rodape-numero { letter-spacing: 0.08em; font-weight: 500; }
+.rodape-progresso { position: absolute; left: 0; bottom: 0; height: 4px; width: 100%; background: var(--laranja); transform-origin: left; }
+.zona { position: absolute; top: 0; bottom: 70px; width: 10%; background: transparent; border: 0; cursor: pointer; z-index: 5; }
+.zona-anterior { left: 0; }
+.zona-seguinte { right: 0; }
+
+.notas { position: absolute; left: 96px; right: 96px; bottom: 86px; z-index: 10; background: var(--branco); color: var(--preto); border-left: 8px solid var(--laranja); border-radius: 10px; padding: 18px 24px; font-size: 20px; line-height: 1.5; }
+.preto { position: fixed; inset: 0; background: #000; z-index: 50; cursor: pointer; }
+.laser { position: fixed; width: 22px; height: 22px; margin: -11px 0 0 -11px; border-radius: 50%; background: var(--laranja); box-shadow: 0 0 22px 8px rgba(255, 107, 0, 0.65); pointer-events: none; z-index: 60; }
+
+/* tipografia: pouco texto, grande */
+.kicker { color: var(--laranja); font-size: 18px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; margin: 0 0 12px; }
+.titulo { font-size: 58px; line-height: 1.1; font-weight: 700; margin: 0 0 40px; letter-spacing: -0.02em; }
+.laranja { color: var(--laranja); }
+.cinza { color: var(--cinza); }
+.mono { font-family: var(--mono); }
+.rotulo { font-size: 15px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cinza); }
+
+/* peças */
+.bloco { background: var(--painel); border: 1px solid var(--linha); border-radius: 16px; }
+.bloco-laranja { background: var(--laranja-fundo); border: 1.5px solid var(--laranja); border-radius: 16px; }
+.chip { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 999px; font-size: 17px; font-weight: 600; background: var(--painel-2); border: 1px solid var(--linha); }
+.chip-laranja { background: var(--laranja); color: #000; border-color: var(--laranja); }
+.numero-enorme { font-size: 76px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; }
+
+/* React Flow */
+.fluxo { flex: 1; margin-bottom: 20px; border-radius: 18px; background: var(--painel); border: 1px solid var(--linha); overflow: hidden; position: relative; }
+.fluxo .react-flow__node.no { background: var(--painel-2); color: var(--branco); border: 1px solid #444; border-radius: 12px; font-family: var(--letra); font-size: 15px; font-weight: 500; padding: 12px 14px; width: 220px; text-align: center; line-height: 1.35; }
+.fluxo .react-flow__node.no.cliente { background: #1a1a1a; border-style: dashed; }
+.fluxo .react-flow__node.no.quente { border-color: var(--vermelho); background: var(--vermelho-fundo); }
+.fluxo .react-flow__node.no.lento { border-color: var(--vermelho); color: #fca5a5; border-style: solid; }
+.fluxo .react-flow__node.no.novo { border-color: var(--laranja); background: rgba(255, 107, 0, 0.1); }
+.fluxo .react-flow__node.no.calmo { border-color: #f5f5f5; border-style: solid; }
+.fluxo .react-flow__node.no.critico { background: var(--vermelho); color: #fff; border-color: var(--vermelho); font-weight: 700; animation: pulsar 0.8s ease-in-out infinite; }
+.fluxo .react-flow__handle { opacity: 0; }
+.fluxo .react-flow__controls { box-shadow: none; }
+.fluxo .react-flow__controls-button { background: var(--painel-2); border-bottom: 1px solid #333; fill: var(--branco); }
+.fluxo .react-flow__controls-button:hover { background: #2a2a2a; }
+.fluxo .react-flow__attribution { background: transparent; }
+.fluxo .react-flow__attribution a { color: #555; }
+.fluxo .react-flow__edge-textbg { fill: var(--painel); }
+@keyframes pulsar { 0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.75); } 50% { box-shadow: 0 0 0 20px rgba(239, 68, 68, 0); } }
+.vermelho { color: var(--vermelho); }
+
+/* registo (logs) */
+.registo { background: #050505; border: 1px solid var(--linha); border-radius: 16px; padding: 22px 24px; font-family: var(--mono); font-size: 16px; line-height: 1.55; }
+.registo .hora { color: var(--vermelho); margin-right: 10px; }
+
+.botao { background: var(--painel-2); color: var(--branco); border: 1px solid #444; border-radius: 999px; padding: 10px 18px; font-size: 16px; font-weight: 600; cursor: pointer; }
+.botao.ativo { background: var(--laranja); color: #000; border-color: var(--laranja); }
+
+/* modo apresentador */
+.apresentador { position: fixed; inset: 0; display: flex; flex-direction: column; background: var(--preto); color: var(--branco); padding: 28px 36px; gap: 22px; }
+.apresentador header { display: flex; gap: 24px; align-items: baseline; font-size: 20px; color: var(--cinza); }
+.apresentador header strong { color: var(--branco); font-size: 26px; flex: 1; }
+.apresentador .tempo { font-family: var(--mono); font-size: 30px; color: var(--laranja); }
+.apresentador-notas { flex: 1; margin: 0; font-size: 30px; line-height: 1.5; overflow: auto; }
+.apresentador footer { display: flex; justify-content: space-between; align-items: center; color: var(--cinza); font-size: 18px; }
+.apresentador button { background: var(--painel-2); color: var(--branco); border: 1px solid #444; border-radius: 10px; padding: 12px 20px; font-size: 18px; margin-left: 10px; cursor: pointer; }
