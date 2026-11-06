@@ -37,7 +37,8 @@ export function Deck() {
   const slide = slides[indice];
 
   useEffect(() => {
-    window.history.replaceState(null, '', `${window.location.pathname}#${indice + 1}`);
+    // Mantém o ?ver=arquitetura do endereço: sem ele, um F5 voltava ao ecrã de entrada.
+    window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}#${indice + 1}`);
     enviar({ tipo: 'estado', indice, passo });
   }, [indice, passo]);
 
