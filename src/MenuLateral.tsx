@@ -4,10 +4,10 @@
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { House } from 'lucide-react';
-import { APRESENTACOES, abrirApresentacao } from './Inicio.tsx';
+import { APRESENTACOES, abrirApresentacao, type IdDaApresentacao } from './Inicio.tsx';
 import './inicio.css';
 
-export function MenuLateral({ atual }: { atual: 'arquitetura' | 'cerebro' }) {
+export function MenuLateral({ atual }: { atual: IdDaApresentacao }) {
   const [aberto, setAberto] = useState(false);
 
   useEffect(() => {

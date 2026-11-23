@@ -1,0 +1,51 @@
+/* A Obra — a terceira apresentação. As mesmas peças da arquitetura, com a paleta do cérebro:
+   Deep Charcoal (fundo), Acid Lime (o que está FEITO) e Electric Violet (o que está EM CURSO, a seguir, a IA). */
+
+.obra {
+  --preto: #18181c;
+  --painel: #202026;
+  --painel-2: #2a2a32;
+  --branco: #f4f4f6;
+  --cinza: #9a9aa6;
+  --cinza-escuro: #3a3a44;
+  --linha: rgba(255, 255, 255, 0.09);
+  --laranja: #b9f500; /* as classes da arquitetura (kicker, progresso, chip) passam a lima */
+  --laranja-fundo: rgba(185, 245, 0, 0.12);
+  --lima: #b9f500;
+  --lima-fundo: rgba(185, 245, 0, 0.12);
+  --violeta: #723bfa;
+  --violeta-claro: #9b74ff;
+  --violeta-fundo: rgba(114, 59, 250, 0.16);
+}
+
+.obra .palco {
+  background:
+    radial-gradient(ellipse at 12% 0%, rgba(114, 59, 250, 0.09), transparent 50%),
+    radial-gradient(ellipse at 100% 100%, rgba(185, 245, 0, 0.08), transparent 45%),
+    var(--preto);
+}
+.obra .slide-cheio { inset: 0; padding: 0; }
+.obra .titulo { letter-spacing: -0.025em; }
+.obra .lima { color: var(--lima); }
+.obra .violeta { color: var(--violeta-claro); }
+.obra .laser { background: var(--lima); box-shadow: 0 0 22px 8px rgba(185, 245, 0, 0.6); }
+.obra .notas { border-left-color: var(--violeta); }
+
+.obra .cartao {
+  background: var(--painel);
+  border: 1px solid var(--linha);
+  border-radius: 20px;
+  padding: 26px 28px;
+  position: relative;
+}
+.obra .cartao-lima { border-color: var(--lima); background: var(--lima-fundo); }
+.obra .cartao-violeta { border-color: var(--violeta); background: var(--violeta-fundo); }
+.obra .frase-grande { font-size: 44px; font-weight: 700; line-height: 1.15; letter-spacing: -0.02em; margin: 0; }
+.obra .frase { font-size: 26px; font-weight: 500; line-height: 1.35; margin: 0; color: var(--branco); }
+.obra .legenda { font-size: 18px; color: var(--cinza); line-height: 1.4; margin: 0; }
+.obra .centro { margin: auto; text-align: center; display: flex; flex-direction: column; align-items: center; }
+
+/* a janela do apresentador da Obra */
+.apresentador.obra { background: #18181c; }
+.apresentador.obra .laranja,
+.apresentador.obra .tempo { color: #b9f500; }

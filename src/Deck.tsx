@@ -1,7 +1,8 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, type ReactNode } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
-import { slides } from './slides/index.ts';
-import { canal, enviar, type Mensagem } from './canal.ts';
+import { slides as slidesDaArquitetura } from './slides/index.ts';
+import { canalDaArquitetura, type Canal, type Mensagem } from './canal.ts';
+import type { SlideDef } from './types.ts';
 
 const LARGURA = 1600;
 const ALTURA = 900;
@@ -18,7 +19,7 @@ function useEscala() {
 }
 
 /** Abre no slide do endereço: #5, ou ?s=5&p=3 para ir direto ao 3.º passo do slide 5. */
-function posicaoInicial() {
+function posicaoInicial(slides: SlideDef[]) {
   const params = new URLSearchParams(window.location.search);
   const n = Number(params.get('s') ?? window.location.hash.replace('#', ''));
   const indice = Number.isInteger(n) && n >= 1 && n <= slides.length ? n - 1 : 0;
@@ -27,9 +28,25 @@ function posicaoInicial() {
   return { indice, passo };
 }
 
-export function Deck() {
+type DeckProps = {
+  /** Os slides desta apresentação (por omissão, os da arquitetura). */
+  slides?: SlideDef[];
+  /** O canal com a janela do apresentador. */
+  canal?: Canal;
+  /** O `?ver=` desta apresentação: o P abre o apresentador DELA. */
+  ver?: string;
+  /** Uma classe por cima do ecrã (o tema de cada apresentação). */
+  tema?: string;
+  /** Teclas próprias da apresentação (devolve true quando a tratou). */
+  teclaExtra?: (k: string, e: KeyboardEvent) => boolean;
+  /** Camadas próprias por cima do palco (ex.: a brincadeira da Obra). */
+  extra?: ReactNode;
+};
+
+export function Deck({ slides = slidesDaArquitetura, canal: ligacao = canalDaArquitetura, ver = 'arquitetura', tema, teclaExtra, extra }: DeckProps) {
+  const { canal, enviar } = ligacao;
   const escala = useEscala();
-  const [{ indice, passo }, setPosicao] = useState(posicaoInicial);
+  const [{ indice, passo }, setPosicao] = useState(() => posicaoInicial(slides));
   const [notas, setNotas] = useState(false);
   const [preto, setPreto] = useState(false);
   const [laser, setLaser] = useState(false);
@@ -37,10 +54,10 @@ export function Deck() {
   const slide = slides[indice];
 
   useEffect(() => {
-    // Mantém o ?ver=arquitetura do endereço: sem ele, um F5 voltava ao ecrã de entrada.
+    // Mantém o ?ver= do endereço: sem ele, um F5 voltava ao ecrã de entrada.
     window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}#${indice + 1}`);
     enviar({ tipo: 'estado', indice, passo });
-  }, [indice, passo]);
+  }, [indice, passo, enviar]);
 
   const seguinte = useCallback(() => {
     setPosicao(({ indice, passo }) => {
@@ -48,7 +65,7 @@ export function Deck() {
       if (indice < slides.length - 1) return { indice: indice + 1, passo: 0 };
       return { indice, passo };
     });
-  }, []);
+  }, [slides]);
 
   const anterior = useCallback(() => {
     setPosicao(({ indice, passo }) => {
@@ -56,7 +73,7 @@ export function Deck() {
       if (indice > 0) return { indice: indice - 1, passo: slides[indice - 1].steps - 1 };
       return { indice, passo };
     });
-  }, []);
+  }, [slides]);
 
   useEffect(() => {
     const ouvir = (e: MessageEvent<Mensagem>) => {
@@ -65,11 +82,14 @@ export function Deck() {
     };
     canal.addEventListener('message', ouvir);
     return () => canal.removeEventListener('message', ouvir);
-  }, [seguinte, anterior, indice, passo]);
+  }, [seguinte, anterior, indice, passo, canal, enviar]);
 
   useEffect(() => {
     const tecla = (e: KeyboardEvent) => {
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      if ((e.target as HTMLElement | null)?.closest?.('input, textarea')) return;
       const k = e.key.toLowerCase();
+      if (teclaExtra?.(k, e)) return;
       if (['arrowright', 'arrowdown', 'pagedown', ' ', 'enter'].includes(k)) { e.preventDefault(); seguinte(); }
       else if (['arrowleft', 'arrowup', 'pageup', 'backspace'].includes(k)) { e.preventDefault(); anterior(); }
       else if (k === 'home') setPosicao({ indice: 0, passo: 0 });
@@ -77,7 +97,7 @@ export function Deck() {
       else if (k === 'n') setNotas((v) => !v);
       else if (k === 'b' || k === '.') setPreto((v) => !v);
       else if (k === 'l') setLaser((v) => !v);
-      else if (k === 'p') window.open(`${window.location.pathname}?apresentador=1`, 'bms-apresentador', 'width=900,height=700');
+      else if (k === 'p') window.open(`${window.location.pathname}?ver=${ver}&apresentador=1`, `bms-apresentador-${ver}`, 'width=980,height=760');
       else if (k === 'f') {
         if (document.fullscreenElement) document.exitFullscreen();
         else document.documentElement.requestFullscreen();
@@ -85,13 +105,13 @@ export function Deck() {
     };
     window.addEventListener('keydown', tecla);
     return () => window.removeEventListener('keydown', tecla);
-  }, [seguinte, anterior]);
+  }, [seguinte, anterior, slides, ver, teclaExtra]);
 
   const progresso = (indice + (passo + 1) / slide.steps) / slides.length;
 
   return (
     <div
-      className="ecra"
+      className={`ecra ${tema ?? ''}`}
       style={{ cursor: laser ? 'none' : undefined }}
       onMouseMove={(e) => laser && setRato({ x: e.clientX, y: e.clientY })}
     >
@@ -99,7 +119,7 @@ export function Deck() {
         <AnimatePresence mode="wait">
           <motion.section
             key={slide.id}
-            className="slide"
+            className={`slide ${slide.semRodape ? 'slide-cheio' : ''}`}
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -30 }}
@@ -109,11 +129,13 @@ export function Deck() {
           </motion.section>
         </AnimatePresence>
 
-        <footer className="rodape">
-          <img src="/logos/Logotipo_BMS_Branco.svg" alt="BMS" className="rodape-logo" />
-          <span className="rodape-numero">{String(indice + 1).padStart(2, '0')} / {slides.length}</span>
-          <motion.div className="rodape-progresso" animate={{ scaleX: progresso }} transition={{ duration: 0.4 }} />
-        </footer>
+        {!slide.semRodape && (
+          <footer className="rodape">
+            <img src="/logos/Logotipo_BMS_Branco.svg" alt="BMS" className="rodape-logo" />
+            <span className="rodape-numero">{String(indice + 1).padStart(2, '0')} / {slides.length}</span>
+            <motion.div className="rodape-progresso" animate={{ scaleX: progresso }} transition={{ duration: 0.4 }} />
+          </footer>
+        )}
 
         {!slide.interativo && (
           <>
@@ -129,6 +151,8 @@ export function Deck() {
             </motion.aside>
           )}
         </AnimatePresence>
+
+        {extra}
       </div>
 
       <AnimatePresence>

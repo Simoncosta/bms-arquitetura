@@ -14,6 +14,7 @@ import { Inicio } from './Inicio.tsx';
 import { MenuLateral } from './MenuLateral.tsx';
 import { Mapa } from './cerebro/Mapa.tsx';
 import { ApresentadorDoCerebro } from './cerebro/Apresentador.tsx';
+import { Obra, ApresentadorDaObra } from './obra/Obra.tsx';
 
 const params = new URLSearchParams(window.location.search);
 const ver = params.get('ver');
@@ -21,12 +22,22 @@ const ver = params.get('ver');
 // ?estatico=1 mostra cada slide já no estado final, sem animações (para rever ou imprimir).
 if (params.has('estatico')) MotionGlobalConfig.skipAnimations = true;
 
-// Duas apresentações num só projeto:
+// Três apresentações num só projeto:
 //   ?ver=arquitetura → os slides da arquitetura (os endereços antigos, #5 e ?s=5, continuam a abri-los)
 //   ?ver=cerebro     → o mapa do cérebro
+//   ?ver=obra        → A Obra: onde estamos e para onde vamos
 //   sem nada         → o ecrã de entrada, para escolher
 // Com &apresentador=1, a janela do apresentador de cada uma (tecla P).
 function escolher(): ReactNode {
+  if (ver === 'obra') {
+    if (params.has('apresentador')) return <ApresentadorDaObra />;
+    return (
+      <>
+        <Obra />
+        <MenuLateral atual="obra" />
+      </>
+    );
+  }
   if (ver === 'cerebro') {
     if (params.has('apresentador')) return <ApresentadorDoCerebro />;
     return (

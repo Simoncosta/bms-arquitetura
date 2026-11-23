@@ -12,5 +12,7 @@ export type SlideDef = {
   notas: string;
   /** Slide com rato ativo (zoom, arrastar, botões): desliga as zonas de clique das margens. */
   interativo?: boolean;
+  /** Ecrã inteiro, sem rodapé (o «ambiente» da dinâmica da caixa). */
+  semRodape?: boolean;
   render: (props: SlideProps) => ReactNode;
 };
