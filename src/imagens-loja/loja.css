@@ -1,0 +1,122 @@
+/* Imagens da loja. Cores = tokens do site novo (ver marca.ts). Medidas em cqw/cqh da própria imagem,
+   para o mesmo desenho servir ao iPhone (mais alto) e ao Android (9:16). */
+
+.li-imagem {
+  --lima: #cdf22b;
+  --tinta: #08090b;
+  --papel: #faf8f3;
+  --sup-escura: #16171a;
+  --suave-escuro: #a3a19c;
+  --suave-claro: #5c5b58;
+  --lima-fundo: #f1fac7;
+
+  container-type: size;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+  flex: none;
+}
+
+/* ── fundos ─────────────────────────────────────────────────────────────── */
+.li-fundo-escuro { background: radial-gradient(circle at 50% 80%, rgb(205 242 43 / 0.2), transparent 48%), var(--tinta); color: var(--papel); --anel: rgb(205 242 43 / 0.16); --suave: var(--suave-escuro); }
+.li-fundo-claro { background: radial-gradient(circle at 50% 78%, var(--lima-fundo), transparent 55%), var(--papel); color: var(--tinta); --anel: rgb(8 9 11 / 0.08); --suave: var(--suave-claro); }
+.li-fundo-lima { background: radial-gradient(circle at 50% 12%, rgb(255 255 255 / 0.35), transparent 50%), var(--lima); color: var(--tinta); --anel: rgb(8 9 11 / 0.12); --suave: rgb(8 9 11 / 0.72); }
+
+/* Os anéis ecoam os círculos do logótipo e assentam por trás do telemóvel. */
+.li-decor { position: absolute; inset: 0; pointer-events: none; }
+.li-anel { position: absolute; left: 50%; top: 72%; border-radius: 50%; border: 0.28cqw solid var(--anel); transform: translate(-50%, -50%); }
+.li-anel.a1 { width: 92cqw; height: 92cqw; }
+.li-anel.a2 { width: 132cqw; height: 132cqw; }
+.li-anel.a3 { width: 172cqw; height: 172cqw; }
+
+/* ── texto ──────────────────────────────────────────────────────────────── */
+.li-texto { position: relative; z-index: 2; padding: max(9cqw, 5.5cqh) 8cqw 0; text-align: center; }
+.li-texto h1 { margin: 0; font-size: 8.6cqw; font-weight: 800; line-height: 1.1; letter-spacing: -0.035em; text-wrap: balance; }
+.li-texto p { margin: 3cqw auto 0; max-width: 78cqw; font-size: 3.9cqw; font-weight: 500; line-height: 1.38; color: var(--suave); text-wrap: balance; }
+.li-texto em { font-style: normal; }
+.li-fundo-escuro .li-texto em { color: var(--lima); }
+/* Marcador só na faixa do meio da linha, para não tapar a linha de cima. */
+.li-fundo-claro .li-texto em { background: linear-gradient(transparent 14%, var(--lima) 14%, var(--lima) 94%, transparent 94%); padding: 0 0.14em; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+.li-fundo-lima .li-texto em { background: linear-gradient(transparent 14%, var(--tinta) 14%, var(--tinta) 94%, transparent 94%); color: var(--lima); padding: 0 0.14em; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+
+/* O logótipo branco do projeto, usado como máscara para tomar a cor do texto em qualquer fundo. */
+.li-logo {
+  display: block;
+  margin: 0 auto 6cqw;
+  width: 36cqw;
+  aspect-ratio: 799.92 / 388.78;
+  background: currentColor;
+  -webkit-mask: url('/logos/Logotipo_BMS_Branco.svg') center / contain no-repeat;
+  mask: url('/logos/Logotipo_BMS_Branco.svg') center / contain no-repeat;
+}
+
+/* ── palco e telemóvel ──────────────────────────────────────────────────── */
+.li-palco {
+  position: relative;
+  flex: 1;
+  margin-top: 6cqw;
+  container-type: size;
+  z-index: 1;
+  /* largura do telemóvel: cabe na altura que sobra (mais um pouco que sai pela base), até 70% da imagem */
+  --tel-w: min(70cqw, calc((100cqh + 9cqw) * 0.48));
+}
+
+.li-tel {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: var(--tel-w);
+  aspect-ratio: 0.48;
+  container-type: inline-size;
+  transform: translateX(-50%);
+}
+/* O corpo mede-se pela largura do próprio telemóvel (cqw do .li-tel), para o de trás encolher por igual. */
+.li-tel-corpo {
+  position: absolute;
+  inset: 0;
+  padding: 3.4cqw;
+  border-radius: 15cqw;
+  background: linear-gradient(145deg, #2a2b30, #0c0d10 45%, #1b1c20);
+  box-shadow:
+    inset 0 0 0 0.6cqw rgb(255 255 255 / 0.08),
+    0 0 0 0.35cqw rgb(0 0 0 / 0.6),
+    0 8cqw 20cqw rgb(0 0 0 / 0.35),
+    0 3cqw 6cqw rgb(0 0 0 / 0.25);
+}
+.li-tel-ecra { position: relative; display: flex; flex-direction: column; width: 100%; height: 100%; border-radius: 11.8cqw; overflow: hidden; background: var(--sup-escura); }
+.li-tel-ecra img { display: block; width: 100%; flex: 1; min-height: 0; object-fit: cover; object-position: top center; }
+.li-tel-estado { flex: none; height: 12cqw; display: flex; align-items: center; justify-content: space-between; padding: 1.4cqw 9cqw 0 11cqw; }
+.li-tel-hora { font-size: 4.4cqw; font-weight: 600; letter-spacing: -0.01em; }
+.li-tel-icones { display: flex; align-items: center; gap: 1.8cqw; }
+.li-tel-rede { display: flex; align-items: flex-end; gap: 0.6cqw; height: 3.2cqw; }
+.li-tel-rede i { width: 0.9cqw; border-radius: 0.3cqw; background: currentColor; }
+.li-tel-rede i:nth-child(1) { height: 35%; }
+.li-tel-rede i:nth-child(2) { height: 55%; }
+.li-tel-rede i:nth-child(3) { height: 78%; }
+.li-tel-rede i:nth-child(4) { height: 100%; }
+.li-tel-bateria { position: relative; width: 6.4cqw; height: 3.2cqw; border-radius: 1cqw; border: 0.35cqw solid currentColor; padding: 0.35cqw; opacity: 0.95; }
+.li-tel-bateria::after { content: ''; position: absolute; right: -1cqw; top: 30%; width: 0.6cqw; height: 40%; border-radius: 0 0.3cqw 0.3cqw 0; background: currentColor; }
+.li-tel-bateria i { display: block; width: 80%; height: 100%; border-radius: 0.4cqw; background: currentColor; }
+.li-tel-camara { position: absolute; top: 3.9cqw; left: 50%; width: 4.2cqw; height: 4.2cqw; border-radius: 50%; background: #050507; box-shadow: inset 0 0 0 0.5cqw #1d1e22; transform: translateX(-50%); }
+
+/* Ecrã de espera até haver captura real: a forma de um ecrã e o nome do ficheiro que falta. */
+.li-tel-espera { position: absolute; inset: 0; display: flex; flex-direction: column; gap: 4cqw; padding: 16cqw 8cqw 8cqw; background: linear-gradient(180deg, #1d1f23, #121316); }
+.li-tel-espera-barra { height: 5cqw; border-radius: 2.5cqw; background: #2c2d31; }
+.li-tel-espera-cartao { height: 38cqw; border-radius: 6cqw; background: linear-gradient(135deg, rgb(205 242 43 / 0.3), rgb(205 242 43 / 0.08)); }
+.li-tel-espera-cartao.curto { height: 24cqw; background: #222327; }
+.li-tel-espera-nome { margin-top: auto; text-align: center; font-size: 4.6cqw; line-height: 1.4; color: #a3a19c; }
+.li-tel-espera-nome b { color: #cdf22b; font-weight: 700; }
+
+/* ── composições ────────────────────────────────────────────────────────── */
+.li-comp-inclinado .li-tel-principal { left: 54%; transform: translateX(-50%) rotate(-7deg); transform-origin: 50% 30%; }
+.li-comp-inclinado .li-anel { left: 56%; }
+
+.li-comp-dois .li-tel-tras { left: 37%; top: 7cqh; width: calc(var(--tel-w) * 0.84); transform: translateX(-50%) rotate(-8deg); filter: brightness(0.88); }
+.li-comp-dois .li-tel-frente { left: 63%; width: calc(var(--tel-w) * 0.9); transform: translateX(-50%) rotate(4deg); }
+
+.li-comp-abertura .li-texto { padding-top: max(11cqw, 6.5cqh); }
+.li-comp-abertura .li-texto h1 { font-size: 9.2cqw; }
+.li-comp-abertura .li-palco { --tel-w: min(62cqw, calc((100cqh + 12cqw) * 0.48)); }
+.li-comp-abertura .li-anel { top: 78%; }

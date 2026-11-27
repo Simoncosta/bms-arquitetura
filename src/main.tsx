@@ -15,6 +15,7 @@ import { MenuLateral } from './MenuLateral.tsx';
 import { Mapa } from './cerebro/Mapa.tsx';
 import { ApresentadorDoCerebro } from './cerebro/Apresentador.tsx';
 import { Obra, ApresentadorDaObra } from './obra/Obra.tsx';
+import { ImagensLoja } from './imagens-loja/ImagensLoja.tsx';
 
 const params = new URLSearchParams(window.location.search);
 const ver = params.get('ver');
@@ -26,9 +27,20 @@ if (params.has('estatico')) MotionGlobalConfig.skipAnimations = true;
 //   ?ver=arquitetura → os slides da arquitetura (os endereços antigos, #5 e ?s=5, continuam a abri-los)
 //   ?ver=cerebro     → o mapa do cérebro
 //   ?ver=obra        → A Obra: onde estamos e para onde vamos
+//   ?ver=loja        → as imagens da App Store e da Google Play (não é uma apresentação; ver src/imagens-loja)
 //   sem nada         → o ecrã de entrada, para escolher
 // Com &apresentador=1, a janela do apresentador de cada uma (tecla P).
 function escolher(): ReactNode {
+  if (ver === 'loja') {
+    // No tamanho real (&imagem=) vai sem menu: é o que o exportar.mjs fotografa.
+    if (params.has('imagem')) return <ImagensLoja />;
+    return (
+      <>
+        <ImagensLoja />
+        <MenuLateral atual="loja" />
+      </>
+    );
+  }
   if (ver === 'obra') {
     if (params.has('apresentador')) return <ApresentadorDaObra />;
     return (

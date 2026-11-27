@@ -1,8 +1,8 @@
-// O ecrã de entrada: escolher a apresentação. Teclas 1, 2 e 3, ou clique.
+// O ecrã de entrada: escolher a apresentação. Teclas 1 a 4, ou clique.
 
 import { useEffect } from 'react';
 import { motion } from 'motion/react';
-import { Boxes, BrainCircuit, Construction } from 'lucide-react';
+import { Boxes, BrainCircuit, Construction, Smartphone } from 'lucide-react';
 import './inicio.css';
 
 export const APRESENTACOES = [
@@ -29,6 +29,14 @@ export const APRESENTACOES = [
     subtitulo: 'Onde estamos, o que já foi possível e para onde vamos',
     cor: '#b9f500',
     Icone: Construction,
+  },
+  {
+    id: 'loja',
+    numero: 4,
+    titulo: 'Imagens da loja',
+    subtitulo: 'As capturas da App Store e da Google Play, para os clientes dos centros',
+    cor: '#cdf22b',
+    Icone: Smartphone,
   },
 ] as const;
 
@@ -79,7 +87,7 @@ export function Inicio() {
             </motion.button>
           ))}
         </div>
-        <p className="inicio-dica">1, 2 ou 3 para escolher · M abre o menu dentro de cada apresentação · F ecrã inteiro</p>
+        <p className="inicio-dica">1 a 4 para escolher · M abre o menu dentro de cada apresentação · F ecrã inteiro</p>
       </main>
     </div>
   );

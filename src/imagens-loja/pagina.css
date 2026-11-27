@@ -1,0 +1,84 @@
+/* A página de pré-visualização (não entra nos PNG). */
+
+.lp-pagina {
+  position: fixed;
+  inset: 0;
+  overflow: auto;
+  background: #08090b;
+  color: #faf8f3;
+  font-family: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+  padding: 40px 48px 64px;
+}
+.lp-topo { display: flex; justify-content: space-between; align-items: flex-end; gap: 32px; flex-wrap: wrap; }
+.lp-logo { height: 30px; display: block; margin-bottom: 20px; }
+.lp-topo h1 { margin: 0; font-size: 44px; font-weight: 800; letter-spacing: -0.03em; }
+.lp-topo p { margin: 6px 0 0; color: #a3a19c; font-size: 17px; }
+.lp-controlos { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+.lp-separadores { display: flex; gap: 8px; background: #16171a; border: 1px solid #2c2d31; border-radius: 16px; padding: 6px; }
+.lp-separadores button { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 10px 16px; border: 0; border-radius: 11px; background: transparent; color: #faf8f3; cursor: pointer; }
+.lp-separadores button strong { font-size: 15px; font-weight: 700; }
+.lp-separadores button span { font-size: 12px; color: #a3a19c; }
+.lp-separadores button.ativo { background: #cdf22b; color: #08090b; }
+.lp-separadores button.ativo span { color: #08090b; opacity: 0.7; }
+.lp-zoom { display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #a3a19c; }
+.lp-zoom input { accent-color: #cdf22b; width: 160px; }
+
+.lp-avisos { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 28px 0 24px; }
+.lp-aviso { font-size: 13px; font-weight: 600; padding: 6px 12px; border-radius: 999px; background: #16171a; border: 1px solid #2c2d31; color: #faf8f3; }
+.lp-aviso.rascunho { background: #2e1a0c; border-color: #fb923c; color: #fb923c; letter-spacing: 0.04em; }
+.lp-aviso.erro { background: #2e1416; border-color: #f87171; color: #f87171; }
+.lp-nota { font-size: 13px; color: #7c7c79; }
+
+.lp-pagina { scrollbar-width: thin; scrollbar-color: #2c2d31 transparent; }
+
+/* A fila: sem a barra do navegador; setas por cima das pontas e uma barra própria por baixo. */
+.lp-fila-moldura { position: relative; }
+.lp-serie { display: flex; gap: 20px; overflow-x: auto; padding: 4px 0 8px; scroll-snap-type: x proximity; scrollbar-width: none; }
+.lp-serie::-webkit-scrollbar { display: none; }
+.lp-item { margin: 0; flex: none; scroll-snap-align: start; }
+.lp-cartao { position: relative; }
+.lp-mini { overflow: hidden; border-radius: 22px; box-shadow: 0 0 0 1px #2c2d31; }
+
+.lp-seta {
+  position: absolute; top: 50%; z-index: 3; width: 52px; height: 52px; margin-top: -40px;
+  display: grid; place-items: center; border-radius: 50%; border: 1px solid #2c2d31;
+  background: rgb(22 23 26 / 0.86); backdrop-filter: blur(10px); color: #faf8f3; cursor: pointer;
+  box-shadow: 0 10px 30px rgb(0 0 0 / 0.45); transition: opacity 0.2s, transform 0.2s, background 0.2s;
+}
+.lp-seta:hover:not(:disabled) { background: #cdf22b; color: #08090b; transform: scale(1.06); }
+.lp-seta:disabled { opacity: 0; pointer-events: none; }
+.lp-seta.esquerda { left: -14px; }
+.lp-seta.direita { right: -14px; }
+
+.lp-trilho { position: relative; height: 14px; margin: 10px auto 0; max-width: 420px; cursor: pointer; touch-action: none; }
+.lp-trilho::before { content: ''; position: absolute; left: 0; right: 0; top: 5px; height: 4px; border-radius: 4px; background: #2c2d31; }
+.lp-polegar { position: absolute; top: 3px; height: 8px; border-radius: 8px; background: #cdf22b; cursor: grab; transition: height 0.15s, top 0.15s; }
+.lp-trilho:hover .lp-polegar { top: 2px; height: 10px; }
+.lp-polegar:active { cursor: grabbing; }
+
+/* O botão de download, só ícone, no canto superior direito de cada imagem. */
+.lp-descarregar {
+  position: absolute; top: 12px; right: 12px; z-index: 2; width: 42px; height: 42px;
+  display: grid; place-items: center; border-radius: 12px; border: 1px solid rgb(255 255 255 / 0.14);
+  background: rgb(8 9 11 / 0.72); backdrop-filter: blur(10px); color: #faf8f3; cursor: pointer;
+  opacity: 0; transform: translateY(-4px); transition: opacity 0.2s, transform 0.2s, background 0.2s, color 0.2s;
+}
+.lp-cartao:hover .lp-descarregar, .lp-descarregar:focus-visible, .lp-descarregar.a-gerar, .lp-descarregar.erro { opacity: 1; transform: none; }
+.lp-descarregar:hover { background: #cdf22b; color: #08090b; border-color: transparent; }
+.lp-descarregar.a-gerar { cursor: progress; animation: lp-pulsar 1s ease-in-out infinite; }
+.lp-descarregar.erro { background: #2e1416; color: #f87171; border-color: #f87171; }
+@keyframes lp-pulsar { 50% { opacity: 0.55; } }
+@media (hover: none) { .lp-descarregar { opacity: 1; transform: none; } }
+
+.lp-item figcaption { display: flex; align-items: baseline; gap: 8px; margin-top: 12px; font-size: 13px; color: #a3a19c; flex-wrap: wrap; }
+.lp-numero { font-family: ui-monospace, 'SF Mono', Menlo, monospace; font-weight: 700; color: #cdf22b; }
+.lp-id { font-weight: 700; color: #faf8f3; }
+.lp-item a { margin-left: auto; color: #cdf22b; text-decoration: none; font-weight: 600; }
+
+/* O modo de exportação: só a imagem, colada ao canto, sem nada à volta. */
+.lp-exportacao { position: fixed; left: 0; top: 0; }
+
+@media (max-width: 700px) {
+  .lp-pagina { padding: 24px 16px 48px; }
+  .lp-topo h1 { font-size: 32px; }
+}
